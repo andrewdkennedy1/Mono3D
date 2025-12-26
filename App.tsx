@@ -2,17 +2,13 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import Viewer3D from './components/Viewer3D';
-import { MeshSettings, AnalysisResult } from './types';
+import { MeshSettings } from './types';
 import { processImageData, exportSTL } from './lib/stl-utils';
-import { analyzeImageFor3D } from './lib/gemini';
 import { 
   ArrowUpTrayIcon, 
   ArrowDownTrayIcon, 
   VariableIcon, 
-  SparklesIcon,
   CubeTransparentIcon,
-  WrenchScrewdriverIcon,
-  ArrowsPointingOutIcon,
   ScissorsIcon,
   BoltIcon,
   ViewfinderCircleIcon,
@@ -41,8 +37,6 @@ const App: React.FC = () => {
   const [settings, setSettings] = useState<MeshSettings>(DEFAULT_SETTINGS);
   const [currentMesh, setCurrentMesh] = useState<THREE.Mesh | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
   
   const processingRef = useRef(false);
@@ -54,7 +48,6 @@ const App: React.FC = () => {
       reader.onload = (event) => {
         const url = event.target?.result as string;
         setImageUrl(url);
-        setAnalysis(null);
       };
       reader.readAsDataURL(file);
     }
@@ -80,20 +73,6 @@ const App: React.FC = () => {
     const timeout = setTimeout(updatePixelData, 300);
     return () => clearTimeout(timeout);
   }, [updatePixelData]);
-
-  const handleAnalyze = async () => {
-    if (!imageUrl) return;
-    setIsAnalyzing(true);
-    const result = await analyzeImageFor3D(imageUrl);
-    setAnalysis(result);
-    if (result.suggestedSettings) {
-      setSettings(prev => ({
-        ...prev,
-        ...result.suggestedSettings,
-      }));
-    }
-    setIsAnalyzing(false);
-  };
 
   const handleExport = () => {
     if (currentMesh) {
@@ -271,12 +250,6 @@ const App: React.FC = () => {
                     <div className="text-[9px] text-zinc-500 uppercase font-black tracking-widest mb-1.5">Accuracy</div>
                     <div className="text-base font-mono font-black text-cyan-400">Vector Line</div>
                   </div>
-                  <button 
-                    onClick={handleAnalyze}
-                    className="p-3.5 bg-zinc-800/80 hover:bg-zinc-700 rounded-full transition-all hover:scale-110 active:scale-90 shadow-lg group"
-                  >
-                    <SparklesIcon className="w-6 h-6 text-cyan-400 group-hover:rotate-12 transition-transform" />
-                  </button>
                </div>
             </div>
 

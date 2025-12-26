@@ -13,8 +13,3 @@ export interface MeshSettings {
   enableBase: boolean;
 }
 
-export interface AnalysisResult {
-  summary: string;
-  suggestedSettings: Partial<MeshSettings>;
-  useCase: string;
-}
