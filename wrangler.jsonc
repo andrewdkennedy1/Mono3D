@@ -7,7 +7,7 @@
   },
   "routes": [
     {
-      "pattern": "mono3d.shibeprime.com/*",
+      "pattern": "m3d.shibeprime.com/*",
       "zone_name": "shibeprime.com"
     }
   ]
