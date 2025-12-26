@@ -1,0 +1,5 @@
+{
+  "name": "Mono3D STL Creator",
+  "description": "Convert black and white PNG images into high-quality, 3D printable STL lithophanes with a real-time 3D viewer and AI-powered mesh analysis.",
+  "requestFramePermissions": []
+}
